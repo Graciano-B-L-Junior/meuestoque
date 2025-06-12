@@ -1,7 +1,10 @@
-# core/models.py
 from django.db import models
+from django.contrib.auth.models import User # 1. Importe o modelo User
 
 class Produto(models.Model):
+    # 2. Adicione este campo para ligar o produto ao usuário
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE,default=None)
+    
     nome = models.CharField(max_length=100, help_text='Nome do produto')
     descricao = models.TextField(blank=True, null=True, help_text='Descrição do produto')
     preco_venda = models.DecimalField(max_digits=10, decimal_places=2, help_text='Preço de venda')
