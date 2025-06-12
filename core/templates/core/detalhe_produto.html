@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ produto.nome }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h2>{{ produto.nome }}</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Descrição:</strong> {{ produto.descricao|default:"Nenhuma descrição." }}</p>
+            <p><strong>Preço de Venda:</strong> R$ {{ produto.preco_venda }}</p>
+            <p><strong>Quantidade em Estoque:</strong> {{ produto.quantidade }}</p>
+            <p><small>Adicionado em: {{ produto.data_criacao|date:"d/m/Y H:i" }}</small></p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'core:editar_produto' produto.pk %}" class="btn btn-warning">Editar</a>
+            <a href="{% url 'core:lista_produtos' %}" class="btn btn-secondary">Voltar para a Lista</a>
+        </div>
+    </div>
+{% endblock %}
