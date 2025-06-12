@@ -7,31 +7,43 @@
         <h1>Lista de Produtos</h1>
         <a href="{% url 'core:adicionar_produto' %}" class="btn btn-primary">Adicionar Produto</a>
     </div>
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Preço (R$)</th>
-                <th>Quantidade</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for produto in produtos %}
-            <tr>
-                <td><a href="{% url 'core:detalhe_produto' produto.pk %}">{{ produto.nome }}</a></td>
-                <td>{{ produto.preco_venda }}</td>
-                <td>{{ produto.quantidade }}</td>
-                <td>
-                    <a href="{% url 'core:editar_produto' produto.pk %}" class="btn btn-sm btn-warning">Editar</a>
-                    <a href="{% url 'core:deletar_produto' produto.pk %}" class="btn btn-sm btn-danger">Deletar</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4" class="text-center">Nenhum produto cadastrado.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Preço Venda (R$)</th>
+                    <th>Quantidade</th>
+                    <th>Lucro (R$)</th>
+                    <th>Margem de Lucro</th>
+                    <th>Valor em Estoque (R$)</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in produtos %}
+                <tr>
+                    <td><a href="{% url 'core:detalhe_produto' produto.pk %}">{{ produto.nome }}</a></td>
+                    <td>{{ produto.preco_venda|floatformat:2 }}</td>
+                    <td>{{ produto.quantidade }}</td>
+
+                    
+                    <td>{{ produto.lucro|floatformat:2 }}</td>
+                    <td>{{ produto.porcentagem_lucro|floatformat:2 }}%</td>
+                    
+                    <td><strong>{{ produto.valor_total_estoque|floatformat:2 }}</strong></td>
+                    
+                    <td>
+                        <a href="{% url 'core:editar_produto' produto.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'core:deletar_produto' produto.pk %}" class="btn btn-sm btn-danger">Deletar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Nenhum produto cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
