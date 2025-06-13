@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Movimentação{% endblock %}
+
+{% block content %}
+    <h1>Registrar Movimentação para: {{ produto.nome }}</h1>
+    <p>Quantidade atual em estoque: <strong>{{ produto.quantidade }}</strong></p>
+
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Salvar Movimentação</button>
+        <a href="{% url 'core:detalhe_produto' produto.pk %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock %}

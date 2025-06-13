@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required # Importe o decorador
 from .models import Produto
-from .forms import ProdutoForm
+from .forms import ProdutoForm,MovimentoEstoqueForm
 
 # --- Views de Autenticação ---
 # (Vamos adicioná-las no próximo passo)
@@ -78,3 +78,36 @@ def registrar(request):
     return render(request, 'registration/register.html', {'form': form})
 
 # ... (resto das views do estoque)
+# ATUALIZE a view detalhe_produto para buscar o histórico
+@login_required
+def detalhe_produto(request, pk):
+    produto = get_object_or_404(Produto, pk=pk, usuario=request.user)
+    # Buscando o histórico de movimentos para este produto
+    movimentos = produto.movimentos.all()
+    context = {
+        'produto': produto,
+        'movimentos': movimentos
+    }
+    return render(request, 'core/detalhe_produto.html', context)
+
+# CRIE esta nova view
+@login_required
+def adicionar_movimento(request, produto_pk):
+    produto = get_object_or_404(Produto, pk=produto_pk, usuario=request.user)
+    if request.method == 'POST':
+        form = MovimentoEstoqueForm(request.POST)
+        if form.is_valid():
+            movimento = form.save(commit=False)
+            movimento.produto = produto
+            movimento.usuario = request.user
+            movimento.save()
+            # Redireciona para a página de detalhes do produto após salvar
+            return redirect('core:detalhe_produto', pk=produto.pk)
+    else:
+        form = MovimentoEstoqueForm()
+
+    context = {
+        'form': form,
+        'produto': produto
+    }
+    return render(request, 'core/form_movimento.html', context)

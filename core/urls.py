@@ -7,7 +7,8 @@ from .views import (
     adicionar_produto,
     editar_produto,
     deletar_produto,
-    registrar # Importe a nova view de registro
+    registrar,
+    adicionar_movimento # Importe a nova view de registro
 )
 
 app_name = 'core'
@@ -24,4 +25,6 @@ urlpatterns = [
     path('produto/adicionar/', adicionar_produto, name='adicionar_produto'),
     path('produto/editar/<int:pk>/', editar_produto, name='editar_produto'),
     path('produto/deletar/<int:pk>/', deletar_produto, name='deletar_produto'),
+    # Nova URL para registrar movimentação
+    path('produto/<int:produto_pk>/movimentar/', adicionar_movimento, name='adicionar_movimento'),
 ]
