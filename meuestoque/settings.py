@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,13 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1a$gr==a3-$^%9k6_7^aiwxp#u709-rlqj(r%derdcz!#zb^1@'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('ambiente') == 'local'
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -76,10 +78,21 @@ WSGI_APPLICATION = 'meuestoque.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('db_name'),          # Nome do banco que você criou
+        'USER': os.getenv('db_user'),         # Usuário do PostgreSQL
+        'PASSWORD': os.getenv('postgres_passwd'),    # Senha do usuário
+        'HOST': os.getenv('host_db_local') if os.getenv('ambiente') == 'local' else os.getenv('host_db_producao'),               # Ou o IP do servidor se for remoto
+        'PORT': '5432',                   # Porta padrão do PostgreSQL
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
