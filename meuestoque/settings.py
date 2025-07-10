@@ -31,6 +31,18 @@ DEBUG = os.getenv('ambiente') == 'local'
 
 ALLOWED_HOSTS = ['*']
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -80,11 +92,11 @@ WSGI_APPLICATION = 'meuestoque.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('db_name'),          # Nome do banco que você criou
-        'USER': os.getenv('db_user'),         # Usuário do PostgreSQL
-        'PASSWORD': os.getenv('postgres_passwd'),    # Senha do usuário
-        'HOST': os.getenv('host_db_local') if os.getenv('ambiente') == 'local' else os.getenv('host_db_producao'),               # Ou o IP do servidor se for remoto
-        'PORT': '5432',                   # Porta padrão do PostgreSQL
+        'NAME': os.getenv('db_local_name') if os.getenv('ambiente') == 'local' else  os.getenv('db_prod_name'),          # Nome do banco que você criou
+        'USER': os.getenv('db_local_user') if os.getenv('ambiente') == 'local' else os.getenv('db_prod_user'),         # Usuário do PostgreSQL
+        'PASSWORD': os.getenv('postgres_passwd_local') if os.getenv('ambiente') == 'local' else os.getenv('postgres_passwd_prod'),    # Senha do usuário
+        'HOST':  os.getenv('host_db_local') if os.getenv('ambiente') == 'local' else os.getenv('host_db_producao'),             # Ou o IP do servidor se for remoto
+        'PORT': '5431' if os.getenv('ambiente') == 'local' else '5432',                   # Porta padrão do PostgreSQL
     }
 }
 
