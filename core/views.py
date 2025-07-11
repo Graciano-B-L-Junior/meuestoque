@@ -1,9 +1,14 @@
-from core.models import Cliente
-from core.serializers import ClienteSerializer
+# users/views.py
+from rest_framework import generics, permissions
+from .serializers import UserListSerializer, UserRegisterSerializer
+from django.contrib.auth.models import User
 
+class UserRegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegisterSerializer
+    permission_classes = [permissions.AllowAny]
 
-from rest_framework import viewsets
-
-class ClienteViewSet(viewsets.ModelViewSet):
-    queryset = Cliente.objects.all()
-    serializer_class = ClienteSerializer
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    permission_classes = [permissions.IsAuthenticated]  # <- exige autenticação

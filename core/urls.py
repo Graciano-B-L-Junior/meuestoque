@@ -1,13 +1,22 @@
-# core/urls.py
-from django.urls import include, path
-from django.contrib.auth import views as auth_views # Importe as views de autenticação
-from rest_framework.urlpatterns import format_suffix_patterns
-from rest_framework.routers import DefaultRouter
-import core.views as views
+# users/urls.py
+from django.urls import path
 
-app_name = 'core'
+from core.Estoque import views
+from .views import UserListView, UserRegisterView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
-    path('clientes/', views.ClienteViewSet.as_view({'get': 'list'}), name='clientes'),
-    
+    path('register/', UserRegisterView.as_view(), name='user-register'),
+    path('users/', UserListView.as_view(), name='user-list'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),   # login
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # refresh
+
+    #===== Estoque ======== #
+    path('produtos/', views.ProdutoList.as_view(), name='produto-list'),
+    path('produtos/<int:pk>/', views.ProdutoDetail.as_view(), name='produto-detail'),
+    path('movimentos/', views.MovimentacaoList.as_view(), name='movimento-list'),
+    path('movimentos/<int:pk>/', views.MovimentacaoDetail.as_view(), name='movimento-detail'),
 ]

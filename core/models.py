@@ -11,11 +11,12 @@ class Produto(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='produtos_cadastrados',
-        verbose_name="Usuário do Estoque"
+        verbose_name="Usuário do Estoque",
+        null=True
     )
     nome = models.CharField(max_length=255, verbose_name="Nome do Produto")
-    preco_custo = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço de Custo")
-    preco_venda = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço de Venda")
+    preco_custo = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço de Custo", null=True)
+    preco_venda = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço de Venda", null=True)
 
     class Meta:
         verbose_name = "Produto"
@@ -118,6 +119,7 @@ class OrdemDeServico(models.Model):
 
     def __str__(self):
         return f"OS #{self.pk} - {self.cliente.nome} ({self.get_situacao_display()})"
+    
 class ProdutoOrdemServico(models.Model):
     """
     Tabela intermediária para representar um produto específico utilizado em uma Ordem de Serviço.

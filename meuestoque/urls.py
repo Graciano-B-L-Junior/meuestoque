@@ -11,7 +11,7 @@ from core import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', include('core.urls', namespace='core')), # Inclui as URLs do app core
-    path('', include('core.urls')),
+    path('api/', include('core.urls')),
 
     path('api-auth/', include('rest_framework.urls')),
     
