@@ -1,7 +1,7 @@
 
 
 from rest_framework import serializers
-from ..models import Movimentacao, Produto
+from .models import Movimentacao, Produto
 
 class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:

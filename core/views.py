@@ -12,3 +12,9 @@ class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserListSerializer
     permission_classes = [permissions.IsAuthenticated]  # <- exige autenticação
+
+
+from django.http import HttpResponse
+
+def login_view(request):
+    return HttpResponse(status=204)

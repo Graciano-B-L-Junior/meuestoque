@@ -1,7 +1,7 @@
 
 from rest_framework import generics
 from .serializers import ProdutoSerializer, MovimentacaoSerializer
-from ..models import Produto, Movimentacao
+from .models import Produto, Movimentacao
 
 
 class ProdutoList(generics.ListCreateAPIView):
